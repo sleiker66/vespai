@@ -1,6 +1,8 @@
 ---
 - hosts: all
   become: yes
+  vars:
+    install_dir: '/home/{{ user }}/vespai'
 
   tasks:
   - name: Update apt repo cache and install git.
@@ -11,7 +13,7 @@
   - name: Download VespAI git repo; recurse/fetch and track/update submodules.
     ansible.builtin.git:
       repo: '{{ vespai_repo }}'
-      dest: /opt/vespai
+      dest: '{{ install_dir }}'
       version: '{{ vespai_branch }}'
       recursive: true
       # NOTE: track_submodules causes the ansible git module to update/track to the
@@ -28,7 +30,7 @@
 
   - name: Make user owner of the git repo.
     ansible.builtin.file:
-      path: /opt/vespai
+      path: '{{ install_dir }}'
       state: directory
       recurse: yes
       owner: '{{ user }}'
@@ -40,13 +42,13 @@
 
   - name: Install VespAI repo python requirements
     ansible.builtin.pip:
-      requirements: /opt/vespai/deploy/requirements.txt
-      virtualenv: /opt/vespai-venv
-      virtualenv_command: "/usr/bin/python -m venv"
+      requirements: '{{ install_dir }}/deploy/requirements.txt'
+      virtualenv: '{{ install_dir }}/.venv/'
+      virtualenv_command: "{{ python }} -m venv"
 
   - name: Make user the owner of the venv directory.
     ansible.builtin.file:
-      path: /opt/vespai-venv
+      path: '{{ install_dir }}/.venv/'
       state: directory
       recurse: yes
       owner: '{{ user }}'
