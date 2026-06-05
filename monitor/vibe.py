@@ -57,7 +57,7 @@ class BackgroundSubtractor:
         # Fill buffers with random values
         max_length = 2 * max(self.height, self.width) + 1
         self.jump = np.zeros((max_length,), np.uint32)
-        self.neighbour = np.zeros((max_length,), np.int)
+        self.neighbour = np.zeros((max_length,), int)
         self.position = np.zeros((max_length,), np.uint32)
 
         for i in range(max_length):
