@@ -18,7 +18,7 @@ if not cap.isOpened():
 sensor = HornetSensor()
 ret, frame = cap.read()
 while ret is not None:
-    detection = sensor.detect(frame)
+    detection = sensor.detect_species(frame)
     if detection is not None:
         frame = detection.result
     cv2.imshow("Detection", frame)

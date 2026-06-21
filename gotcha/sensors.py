@@ -27,7 +27,7 @@ class HornetSensor:
         )
         self.vibe_model = None
 
-    def detect_motion(self, frame: np.ndarray, area_tol: float = 1.3e-4, dilation_strength: int = 1) -> bool:
+    def detect_motion(self, frame: np.ndarray, area_tol: float = 1.3e4, dilation_strength: int = 1) -> bool:
         if not isinstance(frame, np.ndarray):
             raise TypeError(f"Expected a numpy array, got {type(frame).__name__}")
 
@@ -49,7 +49,7 @@ class HornetSensor:
                 return True
         return False
 
-    def detect(
+    def detect_species(
             self,
             frame: np.ndarray,
             motion_detection=False,
