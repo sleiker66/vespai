@@ -100,3 +100,28 @@ class HornetSensor:
             frame_bgr = cv2.cvtColor(frame_with_bounding_boxes, cv2.COLOR_RGB2BGR)
             return Detection(result=frame_bgr, ah_count=ah_count, eh_count=eh_count)
         return None
+
+    def test_vibe_calibration(self, area_tol: int, cap: cv2.VideoCapture, max_samples: int = 200):
+        if not cap.isOpened():
+            raise RuntimeError("Cap is closed")
+
+        success, frame = cap.read()
+        if success:
+            self.detect_motion(frame, area_tol=area_tol) # Init vibe on first frame
+        else:
+            raise RuntimeError("No frame returned")
+
+        num_motions = 0
+        num_total = 0
+        while success and num_total < max_samples:
+            success, frame = cap.read()
+            if not success:
+                break
+            motion = self.detect_motion(frame, area_tol=area_tol)
+            num_total += 1
+            if motion:
+                num_motions += 1
+
+        print("No more frames returned or max samples reached, exiting...")
+        print(f"With area_tol {area_tol}: {num_motions} motions in {num_total} frames.")
+        return num_total, num_motions
