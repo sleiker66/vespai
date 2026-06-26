@@ -26,7 +26,7 @@ while ret is not None:
     motion = sensor.detect_motion(frame)
     if motion:
         if args.print:
-            print("Motion detected")
+            print(f"{dt.datetime.now()}: Motion detected")
         file_name = pathlib.Path(args.save_dir, f"{dt.datetime.now()}.jpg")
         cv2.imwrite(file_name, frame)
         time.sleep(args.brake)
