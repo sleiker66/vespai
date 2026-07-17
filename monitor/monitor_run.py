@@ -208,9 +208,10 @@ if __name__ == '__main__':
                 results.render()  # updates results.imgs with boxes and labels
                 img = cv2.cvtColor(results.ims[0], cv2.COLOR_RGB2BGR)
                 if args.save:
-                    fname = os.path.join(frame_dir, f'frame-{frame_id}.jpeg')
-                    lname = os.path.join(label_dir, f'frame-{frame_id}.txt')
-                    rname = os.path.join(result_dir, f'frame-{frame_id}.jpeg')
+                    detection_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H_%M_%S")
+                    fname = os.path.join(frame_dir, f'frame-{frame_id}-{detection_datetime}.jpeg')
+                    lname = os.path.join(label_dir, f'frame-{frame_id}-{detection_datetime}.txt')
+                    rname = os.path.join(result_dir, f'frame-{frame_id}-{detection_datetime}.jpeg')
                     cv2.imwrite(rname, img)
                     cv2.imwrite(fname, next_frame)
                     with open(lname, 'a') as f:
